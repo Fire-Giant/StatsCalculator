@@ -3,85 +3,177 @@ import static java.util.Arrays.sort;
 public class StatsCalculator {
     private double[] arr;
     private double[] sortedArray;
-    public StatsCalculator(){
+    private double[] outliers;
+    /**
+     * @description default constructor creates an double array with length twenty
+     */
+    public StatsCalculator() {
         arr = new double[20];
     }
-    public StatsCalculator(double[] values){
-        arr = new double[values.length];
-        for(int i = 0; i < values.length; i++){
-            arr[i] = values[i];
-        }
+
+    /**
+     * @description creates a new array of doubles
+     * @param values
+     *
+     */
+
+    public StatsCalculator(double[] values) {
+        arr = values;
     }
-    public void sortData(){
+
+    /**
+     * @description Assigns the value of arr to sortedArray and then sorts that array
+     */
+    public void sortData() {
         sortedArray = arr;
         sort(sortedArray);
 
     }
-    public double calculateMax(){
-       sortData();
-       return sortedArray[arr.length-1];
+
+    /**
+     * @description finds the maximum value of the array
+     * @return The maximum value in the array
+     */
+    public double calculateMax() {
+        sortData();
+        return sortedArray[arr.length - 1];
     }
-    public double calculateMin(){
+
+    /**
+     * @description calculates the minimum value of the array
+     * @return The minimum value in the array
+     */
+    public double calculateMin() {
         sortData();
         return sortedArray[0];
     }
-    public double calculateFirstQuartile(){
+
+    /**
+     * @description calculates the first quartile of the array
+     * @return Value at first quartile excluding the median
+     */
+    public double calculateFirstQuartile() {
         sortData();
-        if(arr.length%4 <= 1){
-        return((sortedArray[(arr.length/2)/2]+sortedArray[(arr.length/2)/2-1])/2);
+        if (arr.length % 4 <= 1) {
+            return ((sortedArray[(arr.length / 2) / 2] + sortedArray[(arr.length / 2) / 2 - 1]) / 2);
         }
-        return sortedArray[(arr.length/2)/2];
+        return sortedArray[(arr.length / 2) / 2];
     }
-    public double calculateThirdQuartile(){
+
+    /**
+     * @description calculates the third quartile of the array
+     * @return Value at third quartile excluding the median
+     */
+    public double calculateThirdQuartile() {
         sortData();
-        if(arr.length%4 <= 1){
-            return((sortedArray[arr.length-1-(arr.length/2)/2]+sortedArray[arr.length-1-(arr.length/2)/2+1])/2);
+        if (arr.length % 4 <= 1) {
+            return ((sortedArray[arr.length - 1 - (arr.length / 2) / 2] + sortedArray[arr.length - 1 - (arr.length / 2) / 2 + 1]) / 2);
         }
-        return sortedArray[arr.length-1-(arr.length/2)/2];
+        return sortedArray[arr.length - 1 - (arr.length / 2) / 2];
     }
-    public double calculateMedian(){
+
+    /**
+     * @description calculates the median value of the array
+     * @return Value at middle of the array
+     */
+    public double calculateMedian() {
         sortData();
-        if(arr.length%2 == 0){
-            return (sortedArray[arr.length/2]+sortedArray[arr.length/2-1])/2;
-        }
-        else{
-            return sortedArray[arr.length/2];
+        if (arr.length % 2 == 0) {
+            return (sortedArray[arr.length / 2] + sortedArray[arr.length / 2 - 1]) / 2;
+        } else {
+            return sortedArray[arr.length / 2];
         }
     }
-    public double calculateSum(){
-        double sum =0;
-        for(double addToSum : arr){
+
+    /**
+     * @description adds all of the values together
+     * @return All of the values added together (the sum)
+     */
+    public double calculateSum() {
+        double sum = 0;
+        for (double addToSum : arr) {
             sum += addToSum;
         }
         return sum;
     }
-    public double calculateMean(){
-        return calculateSum()/arr.length;
+
+    /**
+     * @description divides the sum of the values by the number of values
+     * @return The average value of the ArrayList
+     */
+    public double calculateMean() {
+        return calculateSum() / arr.length;
     }
-    public void print(){
+
+    /**
+     * @description finds any of the outliers of the array using the 1.51 iqr rule
+     * assigns them to a new array
+     * @return double array of the outliers of the original array from least to greatest
+     */
+    public double[] calculateOutliers() {
+        sortData();
+        int count = 0;
+        double[] temporaryArray = new double[arr.length];
+        double interQuartileRange = calculateThirdQuartile() - calculateFirstQuartile();
+        for (int i = 0; i < arr.length; i++) {
+            if (sortedArray[i] < (calculateFirstQuartile() - 1.51 * interQuartileRange)
+                    || sortedArray[i] > (calculateThirdQuartile() + 1.51 * interQuartileRange)) {
+                temporaryArray[count] = sortedArray[i];
+                count++;
+            }
+        }
+        outliers = new double[count];
+        for (int j = 0; j < count; j++) {
+            outliers[j] = temporaryArray[j];
+        }
+        return outliers;
+    }
+
+    /**
+     * @Description Prints to the console each outlier of the array separated by a space
+     */
+    public void printOutliers() {
+        calculateOutliers();
+        System.out.print("Outliers: ");
+        for(double eachValue : outliers){
+            System.out.print(eachValue+ " ");
+        }
+    }
+
+    /**
+     * @description Prints to the console each value in the array separated by a space
+     */
+    public void print() {
         System.out.print("Your data is: ");
-        for(double value : arr){
-            System.out.print(value+ " ");
+        for (double value : arr) {
+            System.out.print(value + " ");
         }
         System.out.println();
     }
-    public void printSorted(){
+
+    /**
+     * @description Prints to the console each value in the array from lease to greatest
+     */
+    public void printSorted() {
         System.out.print("Your sorted data is: ");
         sortData();
-        for(double values : sortedArray){
-            System.out.print(values+" ");
+        for (double values : sortedArray) {
+            System.out.print(values + " ");
         }
         System.out.println();
     }
-    public void printFiveNumberSummary(){
+
+    /**
+     * @description Prints the minimum, first quartile, median, third quartile, maximum, and outliers to the console
+     */
+    public void printFiveNumberSummary() {
         System.out.println("The five number summary is: ");
-        System.out.println("Minimum: "+calculateMin());
-        System.out.println("First Quartile: "+calculateFirstQuartile());
-        System.out.println("Median: "+calculateMedian());
-        System.out.println("Third Quartile: "+calculateThirdQuartile());
-        System.out.println("Maximum: "+calculateMax());
+        System.out.println("Minimum: " + calculateMin());
+        System.out.println("First Quartile: " + calculateFirstQuartile());
+        System.out.println("Median: " + calculateMedian());
+        System.out.println("Third Quartile: " + calculateThirdQuartile());
+        System.out.println("Maximum: " + calculateMax());
+        printOutliers();
         System.out.println();
     }
-
-
 }
