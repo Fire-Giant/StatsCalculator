@@ -18,6 +18,7 @@ public class StatsCalculator {
      */
 
     public StatsCalculator(double[] values) {
+
         arr = values;
     }
 
@@ -110,7 +111,7 @@ public class StatsCalculator {
      * assigns them to a new array
      * @return double array of the outliers of the original array from least to greatest
      */
-    public double[] calculateOutliers() {
+    public double[] findOutliers() {
         sortData();
         int count = 0;
         double[] temporaryArray = new double[arr.length];
@@ -170,6 +171,6 @@ public class StatsCalculator {
         System.out.println("Median: " + calculateMedian());
         System.out.println("Third Quartile: " + calculateThirdQuartile());
         System.out.println("Maximum: " + calculateMax());
-        calculateOutliers();
+        findOutliers();
     }
 }
