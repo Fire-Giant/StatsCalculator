@@ -22,7 +22,7 @@ public class StatsCalculator {
     }
 
     /**
-     * @description Assigns the value of arr to sortedArray and then sorts that array
+     * @description Assigns the value of arr to sortedArray and then sorts that array least to greatest
      */
     public void sortData() {
         sortedArray = arr;
@@ -102,7 +102,7 @@ public class StatsCalculator {
      * @return The average value of the ArrayList
      */
     public double calculateMean() {
-        return calculateSum() / arr.length;
+        return (calculateSum() / arr.length);
     }
 
     /**
@@ -126,18 +126,15 @@ public class StatsCalculator {
         for (int j = 0; j < count; j++) {
             outliers[j] = temporaryArray[j];
         }
-        return outliers;
-    }
-
-    /**
-     * @Description Prints to the console each outlier of the array separated by a space
-     */
-    public void printOutliers() {
-        calculateOutliers();
         System.out.print("Outliers: ");
-        for(double eachValue : outliers){
-            System.out.print(eachValue+ " ");
+        if(outliers.length == 0){
+            System.out.print("No outliers!");
         }
+        for(double outlier: outliers){
+            System.out.print(outlier+" ");
+        }
+        System.out.println();
+        return outliers;
     }
 
     /**
@@ -173,7 +170,6 @@ public class StatsCalculator {
         System.out.println("Median: " + calculateMedian());
         System.out.println("Third Quartile: " + calculateThirdQuartile());
         System.out.println("Maximum: " + calculateMax());
-        printOutliers();
-        System.out.println();
+        calculateOutliers();
     }
 }
