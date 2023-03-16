@@ -166,11 +166,11 @@ public class StatsCalculator {
      */
     public void printFiveNumberSummary() {
         System.out.println("The five number summary is: ");
-        System.out.println("Minimum: " + calculateMin());
-        System.out.println("First Quartile: " + calculateFirstQuartile());
-        System.out.println("Median: " + calculateMedian());
-        System.out.println("Third Quartile: " + calculateThirdQuartile());
-        System.out.println("Maximum: " + calculateMax());
+        System.out.println("\tMinimum: " + calculateMin());
+        System.out.println("\tFirst Quartile: " + calculateFirstQuartile());
+        System.out.println("\tMedian: " + calculateMedian());
+        System.out.println("\tThird Quartile: " + calculateThirdQuartile());
+        System.out.print("\tMaximum: " + calculateMax()+"\n\t");
         findOutliers();
     }
 }
